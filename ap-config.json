@@ -1,0 +1,20 @@
+{
+    "Version":  "1.0.0",
+    "Config":  {
+                   "DB":  ".\\data",
+                   "Node-Path":  ".\\bin\\www",
+                   "DBName":  "youtube"
+               },
+    "Name":  "AP Project",
+    "Node-Agent":  "nodemon",
+    "Authors":  [
+                    "Apoorv Verma [AP] \u003cavdaredevil@gmail.com\u003e"
+                ],
+    "ssh":  "NA",
+    "Port":  3000,
+    "DateUpdated":  {
+                        "value":  "\/Date(1477170125834)\/",
+                        "DisplayHint":  2,
+                        "DateTime":  "Saturday, October 22, 2016 5:02:05 PM"
+                    }
+}

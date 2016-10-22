@@ -1,0 +1,13 @@
+dom-module#sidebar-content
+    style: :clean-css
+    template
+        //TODO: Lookup dom-repeat > repeat over all the properties
+    script: :uglify-js:babel
+        Polymer({
+            is: "sidebar-content",
+            properties: {
+                menuItems: {type: Array},
+                playlists: {type: Array},
+                subscriptions: {type: Array},
+            },
+        })
