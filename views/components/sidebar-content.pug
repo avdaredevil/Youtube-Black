@@ -1,7 +1,15 @@
-dom-module#sidebar-content
+djom-module#sidebar-content
     style: :clean-css
     template
         template(is="dom-repeat", items="[[menuItems]]")
+            paper-icon-item
+                iron-icon(icon="[[item.icon]]")
+                a(href="[[item.link]]") [[item.text]]
+        template(is="dom-repeat", items="[[playlists]]")
+            paper-icon-item
+                iron-icon(icon="[[item.icon]]")
+                a(href="[[item.link]]") [[item.text]]
+        template(is="dom-repeat", items="[[subscriptions]")
             paper-icon-item
                 iron-icon(icon="[[item.icon]]")
                 a(href="[[item.link]]") [[item.text]]
@@ -15,10 +23,18 @@ dom-module#sidebar-content
                     {icon: "social:whatshot", text: "Trending", link: "/trending"},
                     {icon: "av:subscription", text: "Subscriptions", link: "/subscriptions"},
                     {icon: "hourglass-empty", text: "History", link: "/history"},
-                    {icon: "watch-late", text: "Watch Later", link: "/watch-later"},
+                    {icon: "watch-late", text: "Watch Later", link: "/watch-later"}
                 ]},
                 
-                playlists: {type: Array},
-                subscriptions: {type: Array},
+                playlists: {type: Array, value: [
+                    {icon: "av:playlist-play", text: "Random1", link:"/random1"},
+                    {icon: "thumb-up", text: "Like Videos", link:"/like-videos"},
+                    {icon: "av:playlist-play", text: "Random2", link:"/random2"},
+                ]},
+                subscriptions: {type: Array, value: [
+                    {img: "/assets/logo.png", text: "PhillyD", link:"/PhillyD", number: 4},
+                    {icon: "/assets/logo.png", text: "DankMemes", link:"/DankMemes", number: 12},
+                    {icon: "/assets/logo.png", text: "Blackness", link:"/Blackness", number: 74},
+                ]},
             },
         })
