@@ -1,0 +1,27 @@
+{
+  "name": "Demo-Start",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Apoorv Verma [AP] <avdaredevil@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.7.0",
+    "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.7",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^1.1.7",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.1",
+    "paper-button": "PolymerElements/paper-button#^1.0.13",
+    "iron-icon": "PolymerElements/iron-icon#^1.0.12",
+    "iron-icons": "PolymerElements/iron-icons#^1.1.3",
+    "highcharts-chart": "^1.1.5"
+  }
+}
