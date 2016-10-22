@@ -1,12 +1,23 @@
 dom-module#sidebar-content
     style: :clean-css
     template
-        //TODO: Lookup dom-repeat > repeat over all the properties
+        template(is="dom-repeat", items="[[menuItems]]")
+            paper-icon-item
+                iron-icon(icon="[[item.icon]]")
+                a(href="[[item.link]]") [[item.text]]
     script: :uglify-js:babel
         Polymer({
             is: "sidebar-content",
             properties: {
-                menuItems: {type: Array},
+                menuItems: {type: Array, value: [
+                    {icon: "home", text: "Home", link: "/home"},
+                    {icon: "person", text: "My Channel", link: "/my-channel"},
+                    {icon: "social:whatshot", text: "Trending", link: "/trending"},
+                    {icon: "av:subscription", text: "Subscriptions", link: "/subscriptions"},
+                    {icon: "hourglass-empty", text: "History", link: "/history"},
+                    {icon: "watch-late", text: "Watch Later", link: "/watch-later"},
+                ]},
+                
                 playlists: {type: Array},
                 subscriptions: {type: Array},
             },
