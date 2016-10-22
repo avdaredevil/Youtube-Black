@@ -10,32 +10,44 @@ html
         +PolymerImport("iron-icons","social-icons")
         +PolymerImport("iron-flex-layout","iron-flex-layout-classes")
         +PolymerImport("iron-icon")
+        +PolymerImport("paper-item","paper-icon-item")
         +PolymerImport("paper-button")
         +PolymerImport("paper-toolbar")
         +PolymerImport("paper-header-panel")
         +PolymerImport("paper-drawer-panel")
         +PolymerImport("highcharts-chart")
         +MyComponent("sidebar-content")
+        +MyComponent("search-box")
         script(src='/socket.io/socket.io.js')
         style: :clean-css
             html,body,head {margin:0;border:0;padding:0;font-family: Roboto}
     body.fullbleed
-        style(is="custom-style",include="iron-flex iron-flex-alignment iron-positioning")
+        style(is="custom-style",include="iron-flex iron-flex-factors iron-flex-alignment iron-positioning")
         style: :clean-css
-            body {background-color: #f1f1f1}
+            body {background-color: #252526/*#f1f1f1*/}
             main {padding: 1em}
             #Name {text-align:center;width:100%}
             paper-button {background-color: #2196F3 !important;color: white}
+            #toolbar {background-color: #0D0F0F}
+        style(is="custom-style"): :clean-css
+            paper-drawer-panel {
+              --paper-drawer-panel-left-drawer-container: {background-color: #1f1d1d}
+            }
         template#app(is="dom-bind")
             paper-header-panel(type="waterfall")
-                paper-toolbar
-                    paper-icon-button(icon="menu",on-tap="openMenu")
-                    h1 RU Polling
+                paper-toolbar#toolbar
                     .flex
+                        paper-icon-button(icon="menu",paper-drawer-toggle)
+                        h1 YouTube Black
+                    .flex-3
+                        search-box
+                    .flex
+                        figure: img(src="")
                     span [[users]]
                     iron-icon(icon="social:person")
-                paper-drawer-panel()
-                    main.fit.layout-vertical.around-justified
+                paper-drawer-panel
+                    sidebar-content(drawer)
+                    main.fit.layout-vertical.around-justified(main)
                         h2#Name [[QuestionName]]
                         highcharts-chart#Chart(color-by-point,data="[[chartData]]",type="pie",title="[[_pretty(QuestionName)]]")
                         footer.Answer-Choices.layout.horizontal.center.around-justified
@@ -46,4 +58,3 @@ html
             t.io = io()
             t.users = 0
             t.sendChoice = e => {t.io.emit("poll_choice",e.model.item)}
-            t.openMenu = _ => {t.menu}
