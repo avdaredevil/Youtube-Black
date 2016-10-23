@@ -1,27 +1,27 @@
 var express  = require("express");
 var request  = require("request");
 var config  = require("../config/keys.json");
-var url  = require("querystring");
+var querystring = require("querystring");
 
 var router   = express.Router();
 const API = {
     key: config.google,
     base: "https://www.googleapis.com/youtube/v3/",
-    get: route => new Promise((res,rej) => {
-        const q = 
-        request.get(API.base()+route)
+    get: (route,data) => new Promise((res,rej) => {
+        data.key = API.key
+        const q = querystring.stringify(data), URL = API.base()+route+"?"+q
+        console.log("URL:",URL)
+        request.get(URL, (err,resp,body) => err?rej(err):res(body))
     }),
 }
 //=======================================================================|
 function APIErr(res, message, code) {
-    WriteAP(">!Error: "+message);
     const m = typeof message == "object" ? message : {message : message};
-    return res.status(code||API_C.Error).json(m);
+    return res.status(code||403).json(m);
 }
 
 function APISucc(res, message) {
-    WriteAP(">+Success");
-    return res.status(API_C.OK).json(message);
+    return res.status(200).json(message);
 }
 router.get("/vault/:section", function(req, res) {
     API.get("videos", {
@@ -29,7 +29,7 @@ router.get("/vault/:section", function(req, res) {
         chart: "mostPopular",
         regionCode: "US",
         maxResults: 25
-    }).then(onAccept,e => APIErr(res,{message: "Could not fetch", error: e}))
+    }).then(d => APISucc(res, {data: d}),e => APIErr(res, {message: "Could not fetch Popular Videos", error: e}))
 });
 
 router.use(function(req, res, next) {
