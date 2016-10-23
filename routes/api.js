@@ -62,7 +62,7 @@ router.get("/Download-Dis/:vid", function(req, res) {
         console.log('filename: ' + info.filename);
         console.log('size: ' + info.size);
     });
-    video.pipe(fs.createWriteStream('./downloads/myvideo.mp4'))
+    video.pipe(fs.createWriteStream('./downloads/'+req.params.vid+'.mp4'))
 })
 
 router.use(function(req, res, next) {

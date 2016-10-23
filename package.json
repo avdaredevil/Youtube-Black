@@ -13,6 +13,7 @@
     "jstransformer-babel": "^2.1.0",
     "jstransformer-clean-css": "^1.1.1",
     "jstransformer-uglify-js": "^1.1.1",
+    "mongoose": "^4.6.4",
     "morgan": "~1.7.0",
     "pug": "^2.0.0-beta6",
     "request": "^2.75.0",
