@@ -7,12 +7,14 @@ doctype html
 html
     head
         title Online Polling App - RU Edition
+        +PolymerImport("iron-icons")
         +PolymerImport("iron-icons","social-icons")
         +PolymerImport("iron-flex-layout","iron-flex-layout-classes")
         +PolymerImport("iron-icon")
         +PolymerImport("paper-item","paper-icon-item")
         +PolymerImport("paper-button")
         +PolymerImport("paper-toolbar")
+        +PolymerImport("paper-icon-button")
         +PolymerImport("paper-header-panel")
         +PolymerImport("paper-drawer-panel")
         +PolymerImport("highcharts-chart")
@@ -28,17 +30,17 @@ html
             main {padding: 1em}
             #toolbar {background-color: #0D0F0F}
             paper-button {background-color: #2196F3 !important;color: white}
+            img {display:block}
         style(is="custom-style"): :clean-css
-            paper-drawer-panel {
-              --paper-drawer-panel-left-drawer-container: {background-color: #1f1d1d}
-            }
+            paper-drawer-panel {--paper-drawer-panel-left-drawer-container: {background-color: #1f1d1d}}
             #navShadow {position:absolute;height:100%;right:0}
+            #logo {width: 9em}
         template#app(is="dom-bind")
             paper-header-panel(type="waterfall")
                 paper-toolbar#toolbar
-                    .flex
+                    .flex.layout.horizontal.center
                         paper-icon-button(icon="menu",paper-drawer-toggle)
-                        h1 YouTube Black
+                        img#logo(src="/assets/logo_white.png")
                     .flex-3
                         search-box
                     .flex

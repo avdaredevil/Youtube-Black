@@ -22,10 +22,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/assets', express.static(path.join(__dirname, 'bower_components')));
+app.use('/assets', express.static(path.join(__dirname, 'public')));
 
 var users = 0, ans = {};
 io.on('connection', function(socket){
