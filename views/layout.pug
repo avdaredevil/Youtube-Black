@@ -62,7 +62,7 @@ html
                         img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo')]]_white.png")
                     .flex-6(hidden$="[[thin]]")
                         paper-search-bar#Search(query="{{searchQuery}}")
-                    .flex.justify-end.layout.horizontal
+                    .flex.justify-end.layout.horizontal(hidden$="[[thin]]")
                         .flex
                         span [[users]]
                         iron-icon(icon="social:person")
