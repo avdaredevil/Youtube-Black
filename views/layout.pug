@@ -8,6 +8,7 @@ html
     head
         title Online Polling App - RU Edition
         +PolymerImport("iron-icons")
+        +PolymerImport("iron-icons","av-icons")
         +PolymerImport("iron-icons","social-icons")
         +PolymerImport("iron-flex-layout","iron-flex-layout-classes")
         +PolymerImport("iron-icon")
@@ -20,6 +21,7 @@ html
         +PolymerImport("highcharts-chart")
         +MyComponent("sidebar-content")
         +MyComponent("search-box")
+        link(rel="stylesheet",href='/assets/gmail-scrollbar.css')
         script(src='/socket.io/socket.io.js')
         style: :clean-css
             html,body,head {margin:0;border:0;padding:0;font-family: Roboto}

@@ -1,17 +1,22 @@
 dom-module#sidebar-content
     style: :clean-css
+        paper-icon-item {color:white}
+        paper-icon-item a {text-decoration:inherit;color:inherit}
+        .div {margin-top: 1px solid #e2e2e2;padding: .75em .5em; color: #cc181e;font-size: .7em;text-transform: uppercase}
     template
         template(is="dom-repeat", items="[[menuItems]]")
             paper-icon-item
-                iron-icon(icon="[[item.icon]]")
+                iron-icon(icon="[[item.icon]]",item-icon)
                 a(href="[[item.link]]") [[item.text]]
+        .div Library
         template(is="dom-repeat", items="[[playlists]]")
             paper-icon-item
-                iron-icon(icon="[[item.icon]]")
+                iron-icon(icon="[[item.icon]]",item-icon)
                 a(href="[[item.link]]") [[item.text]]
+        .div Subscriptions
         template(is="dom-repeat", items="[[subscriptions]")
             paper-icon-item
-                iron-icon(icon="[[item.icon]]")
+                iron-icon(icon="[[item.icon]]",item-icon)
                 a(href="[[item.link]]") [[item.text]]
     script: :uglify-js:babel
         Polymer({
@@ -19,11 +24,11 @@ dom-module#sidebar-content
             properties: {
                 menuItems: {type: Array, value: [
                     {icon: "home", text: "Home", link: "/home"},
-                    {icon: "person", text: "My Channel", link: "/my-channel"},
+                    {icon: "social:person", text: "My Channel", link: "/my-channel"},
                     {icon: "social:whatshot", text: "Trending", link: "/trending"},
-                    {icon: "av:subscription", text: "Subscriptions", link: "/subscriptions"},
+                    {icon: "av:subscriptions", text: "Subscriptions", link: "/subscriptions"},
                     {icon: "hourglass-empty", text: "History", link: "/history"},
-                    {icon: "watch-late", text: "Watch Later", link: "/watch-later"}
+                    {icon: "watch-later", text: "Watch Later", link: "/watch-later"}
                 ]},
                 playlists: {type: Array, value: [
                     {icon: "av:playlist-play", text: "Random1", link:"/random1"},
