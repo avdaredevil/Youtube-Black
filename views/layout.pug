@@ -35,23 +35,27 @@ html
             #toolbar {background-color: #0D0F0F}
             paper-button {background-color: #2196F3 !important;color: white}
             img {display:block}
+            #Search #input {background-color: transparent;color:inherit}
         style(is="custom-style"): :clean-css
             paper-drawer-panel {--paper-drawer-panel-left-drawer-container: {background-color: #1f1d1d}}
             #navShadow {position:absolute;height:100%;right:0}
             #logo {width: 9em}
+            #logo[thin] {width: 2.75em}
+            #Search {min-width:17em;width:90%;max-width: 29em;margin:auto;background-color: rgba(255,255,255,.14);color:white}
+            #Search {--background-color: transparent}
         template#app(is="dom-bind")
             paper-header-panel(type="waterfall")
                 paper-toolbar#toolbar
                     .flex.layout.horizontal.center
                         paper-icon-button(icon="menu",paper-drawer-toggle)
-                        img#logo(src="/assets/logo_white.png")
-                    .flex-3
-                        paper-search-bar
-                    .flex
-                        figure: img(src="")
-                    span [[users]]
-                    iron-icon(icon="social:person")
-                paper-drawer-panel
+                        img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo_white')]].png")
+                    .flex-6
+                        paper-search-bar#Search
+                    .flex.justify-end.layout.horizontal
+                        .flex
+                        span [[users]]
+                        iron-icon(icon="social:person")
+                paper-drawer-panel(narrow="{{thin}}")
                     nav(drawer)
                         sidebar-content.fit
                         #navShadow
@@ -60,6 +64,7 @@ html
         script: :uglify-js:babel
             var t = document.querySelector("#app")
             t.io = io()
+            t.ternary = (a,b,c) => a?b:c
             t.users = 0
             t.data = [[0,1],[1,2],[2,5],[3,16],[4,12],[5,18],[6,2]]
             t.sendChoice = e => {t.io.emit("poll_choice",e.model.item)}
