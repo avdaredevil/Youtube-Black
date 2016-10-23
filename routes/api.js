@@ -57,7 +57,13 @@ router.get("/search/:query", function(req, res) {
 
 router.get("/Download-Dis/:vid", function(req, res) {
     const vid = dl_y("http://www.youtube.com/watch?v="+req.params.vid)
-});
+    vid.on('info', function(info) {
+        console.log('Download started');
+        console.log('filename: ' + info.filename);
+        console.log('size: ' + info.size);
+    });
+    video.pipe(fs.createWriteStream('./downloads/myvideo.mp4'))
+})
 
 router.use(function(req, res, next) {
     APIErr(res, "Invalid API call", 403);

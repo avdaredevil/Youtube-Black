@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -9,8 +10,11 @@ var app = express();
 var http = require('http').createServer(app);
 global.server = http;
 var io = require('socket.io')(http);
-
-// view engine setup
+//==DB=========================================================================|
+mongoose.Promise = global.Promise
+mongoose.connect("mongodb://localhost/youtube")
+require("./models/Video")
+//==View=======================================================================|
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
