@@ -49,7 +49,7 @@ html
                     .flex.layout.horizontal.center
                         paper-icon-button(icon="menu",paper-drawer-toggle)
                         img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo_white')]].png")
-                    .flex-6
+                    .flex-6(hidden$="[[thin]]")
                         paper-search-bar#Search
                     .flex.justify-end.layout.horizontal
                         .flex
