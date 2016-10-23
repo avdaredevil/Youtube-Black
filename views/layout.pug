@@ -47,7 +47,7 @@ html
             paper-header-panel(type="waterfall")
                 paper-toolbar#toolbar
                     .flex.layout.horizontal.center
-                        paper-icon-button(icon="menu",paper-drawer-toggle)
+                        paper-icon-button(hidden$="[[!thin]]",icon="[[ternary(openMenu,'arrow-back','menu')]]",on-tap="toggleSidebar")
                         img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo')]]_white.png")
                     .flex-6(hidden$="[[thin]]")
                         paper-search-bar#Search
@@ -55,17 +55,22 @@ html
                         .flex
                         span [[users]]
                         iron-icon(icon="social:person")
-                paper-drawer-panel(narrow="{{thin}}")
+                paper-drawer-panel#drawer(narrow="{{thin}}",selected="{{panel}}")
                     nav(drawer)
                         sidebar-content.fit
                         #navShadow
                     main.fit.layout-vertical.around-justified(main)
                         block content
+            dummy-listener(prop="[[setPanelState(thin,panel)]]")
+            iron-ajax(auto,url="/api/Get-Trending")
         script: :uglify-js:babel
             var t = document.querySelector("#app")
             t.io = io()
+            t.openMenu = false
             t.ternary = (a,b,c) => a?b:c
             t.users = 0
             t.data = [[0,1],[1,2],[2,5],[3,16],[4,12],[5,18],[6,2]]
             t.sendChoice = e => {t.io.emit("poll_choice",e.model.item)}
+            t.setPanelState = (n,p) => {t.openMenu = n&&p=="drawer"}
+            t.toggleSidebar = _ => t.$.drawer.togglePanel()
         block script

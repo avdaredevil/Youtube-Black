@@ -5,8 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/app');
-
 var app = express();
 var http = require('http').createServer(app);
 global.server = http;
@@ -23,7 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', routes);
+app.use('/', require("/routes/app"));
+app.use('/api', require("/routes/api"));
 app.use('/assets', express.static(path.join(__dirname, 'bower_components')));
 app.use('/assets', express.static(path.join(__dirname, 'public')));
 
