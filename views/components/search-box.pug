@@ -1,13 +1,13 @@
 doms-module#search-box
     style: :clean-css
     template
-        paper-card
-            iron-icon(icon="search")
+        iron-icon(icon="search")
+        input#searchInput(value="{{query}}")
     script: :uglify-js:babel
         Polymer({
             is: "search-box",
             properties: {
                query: {type: String},
-               focused: {type: Boolean, readOnly: true, notifys: true}
+               focused: {type: Boolean, readOnly: true, notifies: true}
             },
         })
