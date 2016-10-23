@@ -14,13 +14,14 @@ html
         +PolymerImport("iron-flex-layout","iron-flex-layout-classes")
         +PolymerImport("paper-item","paper-icon-item")
         +PolymerImport("paper-card")
+        +PolymerImport("paper-toast")
         +PolymerImport("paper-button")
         +PolymerImport("paper-toolbar")
         +PolymerImport("paper-icon-button")
         +PolymerImport("paper-header-panel")
         +PolymerImport("paper-drawer-panel")
-        +PolymerImport("highcharts-chart")
         //- Custom Fetches
+        +PolymerImport("highcharts-chart")
         +PolymerImport("paper-search")
         +MyComponent("sidebar-content")
         link(rel="stylesheet",href='/assets/gmail-scrollbar.css')
@@ -63,6 +64,8 @@ html
                         block content
             dummy-listener(prop="[[setPanelState(thin,panel)]]")
             iron-ajax(auto,url="/api/Get-Trending")
+            paper-toast#status
+            paper-toast#error
         script: :uglify-js:babel
             var t = document.querySelector("#app")
             t.io = io()
