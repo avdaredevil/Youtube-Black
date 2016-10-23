@@ -33,6 +33,7 @@
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
     "google-youtube": "GoogleWebComponents/google-youtube#^1.2.1",
     "paper-progress": "PolymerElements/paper-progress#^1.0.11",
-    "Snap.svg": "snap.svg#^0.4.1"
+    "Snap.svg": "snap.svg#^0.4.1",
+    "paper-badge": "PolymerElements/paper-badge#^1.1.4"
   }
 }

@@ -1,7 +1,11 @@
 var express  = require("express");
+var path  = require("path");
 var request  = require("request");
 var config  = require("../config/keys.json");
 var querystring = require("querystring");
+var mongoose = require("mongoose");
+var fs = require("fs");
+var Video = mongoose.model("Video");
 var dl_y = require("youtube-dl");
 
 var router   = express.Router();
@@ -55,14 +59,19 @@ router.get("/search/:query", function(req, res) {
     .catch(e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
 });
 
-router.get("/Download-Dis/:vid", function(req, res) {
+router.post("/Download-Dis/:vid", function(req, res) {
     const vid = dl_y("http://www.youtube.com/watch?v="+req.params.vid)
     vid.on('info', function(info) {
         console.log('Download started');
         console.log('filename: ' + info.filename);
-        console.log('size: ' + info.size);
+        console.log('size: '+info.size);
     });
-    video.pipe(fs.createWriteStream('./downloads/'+req.params.vid+'.mp4'))
+    const location = path.resolve('./downloads/'+req.params.vid+'.mp4')
+    vid.pipe(fs.createWriteStream(location))
+    Video.newVideo(req.params.vid, './downloads/'+req.params.vid+'.mp4', req.body, (err,v) => {
+        if (err) {return APIErr(res,{error: err})}
+        return APISucc(res,{message: "I Gotcha -AP", video: v})
+    })
 })
 
 router.use(function(req, res, next) {

@@ -28,6 +28,7 @@ block content
             paper-progress#progress(value="[[mult(progress,100)]]")
     paper-dialog#modal(with-backdrop,on-iron-overlay-closed="onModalClose",on-iron-overlay-opened="onModalOpen")
         google-youtube#tube(autoplay=1,state="{{playState}}",video-id="[[currVideo.id]]",fluid,currenttime="{{playback.done}}",duration="{{playback.total}}")
+    iron-ajax#downloadAPI(method="POST",handle-as="json",content-type="application/json")
     dummy-listener(prop="[[calcProgress(playback.done,playback.total)]]")
     dummy-listener(prop="[[stateCalc(playState)]]")
 block script
@@ -38,8 +39,10 @@ block script
         t.currVideo = {}
         t.openVideo = e => {const p = (e.model||[]).item;p && (t.currVideo = p);t.$.modal.open()}
         t.downloadVideo = e => {
-            const p = e.model.item
-            t.io.emit("download_video", {id: p.id})
+            const p = e.model.item, el = t.$.downloadAPI
+            el.url = "/api/Download-Dis/"+p.id
+            el.body = p
+            el.generateRequest()
         }
         t.onModalClose = _ => {t.modalMinimized = true}
         t.onModalOpen = _ => {t.modalMinimized = false}

@@ -8,6 +8,11 @@ dom-module#sidebar-content
             paper-icon-item
                 iron-icon(icon="[[item.icon]]",item-icon)
                 a(href="[[item.link]]") [[item.text]]
+        paper-icon-item
+            iron-icon(icon="av:video-library",item-icon)
+            a(href="/offline")
+                span Downloaded Videos
+                paper-badge [[pc]]
         .div Library
         template(is="dom-repeat", items="[[playlists]]")
             paper-icon-item
@@ -22,13 +27,13 @@ dom-module#sidebar-content
         Polymer({
             is: "sidebar-content",
             properties: {
+                pc: {type: Number, value: 0},
                 menuItems: {type: Array, value: [
                     {icon: "home", text: "Home", link: "/home"},
                     {icon: "social:person", text: "My Channel", link: "/my-channel"},
                     {icon: "social:whatshot", text: "Trending", link: "/trending"},
                     {icon: "av:subscriptions", text: "Subscriptions", link: "/subscriptions"},
-                    {icon: "hourglass-empty", text: "History", link: "/history"},
-                    {icon: "watch-later", text: "Watch Later", link: "/watch-later"}
+                    {icon: "hourglass-empty", text: "History", link: "/history"}
                 ]},
                 playlists: {type: Array, value: [
                     {icon: "av:playlist-play", text: "Random1", link:"/random1"},

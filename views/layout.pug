@@ -16,6 +16,7 @@ html
         +PolymerImport("iron-flex-layout","iron-flex-layout-classes")
         +PolymerImport("paper-item","paper-icon-item")
         +PolymerImport("paper-card")
+        +PolymerImport("paper-badge")
         +PolymerImport("paper-toast")
         +PolymerImport("paper-button")
         +PolymerImport("paper-dialog")
@@ -68,7 +69,7 @@ html
                         iron-icon(icon="social:person")
                 paper-drawer-panel#drawer(narrow="{{thin}}",selected="{{panel}}")
                     nav(drawer)
-                        sidebar-content.fit
+                        sidebar-content.fit(watch="[[pc]]")
                         #navShadow
                     main#main.fit.layout-vertical.around-justified(main)
                         block content
@@ -76,9 +77,12 @@ html
             iron-ajax(auto,url="/api/search/[[searchQuery]]",last-response="{{searchResults}}")
             paper-toast#status
             paper-toast#error
+        script
+            var pc = #{projects}
         script: :uglify-js:babel
             var t = document.querySelector("#app")
             t.io = io()
+            t.pc = pc
             t.openMenu = false
             t.ternary = (a,b,c) => a?b:c
             t.users = 0
