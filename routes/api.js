@@ -2,6 +2,7 @@ var express  = require("express");
 var request  = require("request");
 var config  = require("../config/keys.json");
 var querystring = require("querystring");
+var dl_y = require("youtube-dl");
 
 var router   = express.Router();
 const MakeJSON = j => typeof j=="object"?j:JSON.parse(j)
@@ -53,6 +54,11 @@ router.get("/search/:query", function(req, res) {
     })).then(d => APISucc(res, {data: d.items}),e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
     .catch(e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
 });
+
+router.get("/Download-Dis/:vid", function(req, res) {
+    const vid = dl_y("http://www.youtube.com/watch?v="+req.params.vid)
+});
+
 router.use(function(req, res, next) {
     APIErr(res, "Invalid API call", 403);
 });
