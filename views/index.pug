@@ -17,11 +17,11 @@ block content
     h2 Trending
     section#trending.layout.horizontal.scroll
         template(is="dom-repeat",items="[[trending.data]]")
-            utube-snippet(data="[[item]]",on-tap="openVideo")
+            utube-snippet(data="[[item]]",on-tap="openVideo",on-download="downloadVideo")
     h2(hidden$="[[!countOf(searchResults.data)]]") Search Results
     section#results(hidden$="[[!countOf(searchResults.data)]]")
         template(is="dom-repeat",items="[[searchResults.data]]")
-            utube-snippet(data="[[item]]",on-tap="openVideo",horizontal)
+            utube-snippet(data="[[item]]",on-tap="openVideo",on-download="downloadVideo",horizontal)
     footer#Preview(hidden$="[[showPreview(modalMinimized,currVideo)]]",on-tap="openVideo")
         template(is="dom-if",if="[[currVideo.snippet]]")
             img(src="[[currVideo.snippet.thumbnails.medium.url]]")
@@ -37,8 +37,12 @@ block script
         t.playback = {}
         t.currVideo = {}
         t.openVideo = e => {const p = (e.model||[]).item;p && (t.currVideo = p);t.$.modal.open()}
+        t.downloadVideo = e => {
+            const p = e.model.item
+            t.io.emit("download_video", {id: p.id})
+        }
         t.onModalClose = _ => {t.modalMinimized = true}
         t.onModalOpen = _ => {t.modalMinimized = false}
         t.calcProgress = (d,tr) => {t.progress = d/tr}
         t.showPreview = (min,c) => !(c.id&&min)
-        t.stateCalc = p => {if (!p || p==1 || !t.$.tube.playbackstarted) {return};console.log("Forzing",p);t.$.tube.play()}
+        t.stateCalc = p => {if (p<3 || !t.$.tube.playbackstarted) {return};console.log("Forzing",p);t.$.tube.play()}

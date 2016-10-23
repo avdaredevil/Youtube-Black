@@ -6,6 +6,7 @@ dom-module#utube-snippet
         paper-card:not([vertical]) figure {width:13em;overflow:hidden}
         paper-card:not([vertical]) figure img {width:initial;height:100%;position:absolute;left:50%;transform:translateX(-50%)}
         paper-card:not([vertical]) #Info {@apply(--layout-flex)}
+        paper-card:not([vertical]) #Info h3 {-webkit-line-clamp:1}
         figure {margin:0;width:100%;position:relative}
         figure > figcaption {position:absolute;bottom:0;right:0;background:rgba(0,0,0,.69);font-size:.8em;padding:.25em .5em;color:#fff}
         img {display:block;width:100%}
@@ -18,10 +19,12 @@ dom-module#utube-snippet
         .date,.views {display: inline-block}
         .views:after {content: " views"}
         .date:before {content: "-";margin:0 .5em}
+        #download {position:absolute;bottom:0;left:0;background:rgba(0,0,0,.69);width:2em;height:2em;color:white}
     template
         paper-card(vertical$="[[!horizontal]]")
             figure
                 img(src="[[pic]]")
+                paper-icon-button#download(icon="file-download",on-tap="download")
                 figcaption [[duration]]
             footer#Info.layout.vertical
                 h3.limit-line [[title]]
@@ -51,6 +54,10 @@ dom-module#utube-snippet
             },
             or: (a,b) => a||b,
             fetchPath: function(d,path) {return this.get("data."+path)},
+            download: function(e) {
+                e.stopPropagation();e.preventDefault()
+                this.fire("download")
+            },
             calcDuration: function(d,path) {var dt = this.fetchPath(d,path);dt = dt.slice(2,-1).replace(/\D/g,":");return /\:/g.test(dt)?dt:dt+"s"},
             commaFormat: function(d,path) {
                 return this.fetchPath(d,path).split('').reverse().map((v,i)=>i%3?v:v+',').reverse().join("").slice(0,-1)
