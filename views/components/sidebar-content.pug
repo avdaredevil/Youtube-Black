@@ -1,4 +1,4 @@
-doms-module#sidebar-content
+dom-module#sidebar-content
     style: :clean-css
     template
         template(is="dom-repeat", items="[[menuItems]]")
@@ -25,16 +25,15 @@ doms-module#sidebar-content
                     {icon: "hourglass-empty", text: "History", link: "/history"},
                     {icon: "watch-late", text: "Watch Later", link: "/watch-later"}
                 ]},
-                
                 playlists: {type: Array, value: [
                     {icon: "av:playlist-play", text: "Random1", link:"/random1"},
-                    {icon: "thumb-up", text: "Like Videos", link:"/like-videos"},
                     {icon: "av:playlist-play", text: "Random2", link:"/random2"},
+                    {icon: "thumb-up", text: "Liked Videos", link:"/like-videos"},
                 ]},
                 subscriptions: {type: Array, value: [
                     {img: "/assets/logo.png", text: "PhillyD", link:"/PhillyD", number: 4},
-                    {icon: "/assets/logo.png", text: "DankMemes", link:"/DankMemes", number: 12},
-                    {icon: "/assets/logo.png", text: "Blackness", link:"/Blackness", number: 74},
+                    {img: "/assets/logo.png", text: "DankMemes", link:"/DankMemes", number: 12},
+                    {img: "/assets/logo.png", text: "Blackness", link:"/Blackness", number: 74},
                 ]},
             },
         })
