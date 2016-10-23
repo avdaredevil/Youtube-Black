@@ -40,7 +40,7 @@ html
             paper-drawer-panel {--paper-drawer-panel-left-drawer-container: {background-color: #1f1d1d}}
             #navShadow {position:absolute;height:100%;right:0}
             #logo {width: 9em}
-            #logo[thin] {width: 2.75em}
+            #logo[thin] {width: 2.75em;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
             #Search {min-width:17em;width:90%;max-width: 29em;margin:auto;background-color: rgba(255,255,255,.14);color:white}
             #Search {--background-color: transparent}
         template#app(is="dom-bind")
@@ -48,7 +48,7 @@ html
                 paper-toolbar#toolbar
                     .flex.layout.horizontal.center
                         paper-icon-button(icon="menu",paper-drawer-toggle)
-                        img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo_white')]].png")
+                        img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo')]]_white.png")
                     .flex-6(hidden$="[[thin]]")
                         paper-search-bar#Search
                     .flex.justify-end.layout.horizontal
