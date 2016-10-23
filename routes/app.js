@@ -4,6 +4,10 @@ var fs = require('fs');
 var router = express.Router();
 
 router.get('/', (req, res) => res.render('index'));
+router.get('/test', (req, res) => res.render('test'));
+
+
+
 
 router.get('/Get-Component/:component', (req, res) => {
     const name = req.params.component.replace(/\\\//g,''), loc = path.join('components',name), fullLoc = path.join(express().get("views"),loc)
