@@ -1,28 +1,24 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ChartMetadata = require('./ChartMetadata');
 
-ProjectSchema = new Schema({
-    name: {type: String, trim: true, required: true},
-    created: {type: Date, default: Date.now},
-    state: {type: String, enum: ["pending","analyzing","processed"], lowercase: true},
-    metadata: [ChartMetadata.schema],
+VideoSchema = new Schema({
+    y_id: {type: String, trim: true, required: true, key: true},
+    file: {type: String},
     data: {}
 })
-ProjectSchema.set("toJSON", {virtuals: true})
-ProjectSchema.set("toObject", {virtuals: true})
+VideoSchema.set("toJSON", {virtuals: true})
+VideoSchema.set("toObject", {virtuals: true})
 
-ProjectSchema.statics.newProject = function(name, data, done){
-    if (typeof data === "function" && !done) {done = data;data=undefined}
-	var Project = this;
-    Project.create({
-        name: name,
-        state: "pending",
+VideoSchema.statics.newVideo = function(y_id, file, data, done){
+	var Video = this;
+    Video.create({
+        y_id: y_id,
+        file: file,
         data: data
-    }, function(err, project){
+    }, function(err, video){
         if(err) {throw (console.warn("[AP-ERROR] ",err),err)}
-        done(null, project);
+        done(null, video);
     });
 }
 
-module.exports = mongoose.model("Project", ProjectSchema);
+module.exports = mongoose.model("Video", VideoSchema);
