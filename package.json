@@ -15,8 +15,10 @@
     "jstransformer-uglify-js": "^1.1.1",
     "morgan": "~1.7.0",
     "pug": "^2.0.0-beta6",
+    "request": "^2.75.0",
     "serve-favicon": "~2.3.0",
-    "socket.io": "^1.5.0"
+    "socket.io": "^1.5.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.16.0"

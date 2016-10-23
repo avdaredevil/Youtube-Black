@@ -21,8 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', require("/routes/app"));
-app.use('/api', require("/routes/api"));
+app.use('/', require("./routes/app"));
+app.use('/api', require("./routes/api"));
 app.use('/assets', express.static(path.join(__dirname, 'bower_components')));
 app.use('/assets', express.static(path.join(__dirname, 'public')));
 
