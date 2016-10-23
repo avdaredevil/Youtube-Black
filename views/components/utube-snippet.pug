@@ -1,0 +1,64 @@
+dom-module#utube-snippet
+    style: :clean-css
+        paper-card {cursor:pointer;width:100%;margin:0 .5em;background-color:#171515}
+        paper-card[vertical] {width:12em;min-height:10em}
+        paper-card:not([vertical]) {height:7.5em;margin:1em 0;@apply(--layout-horizontal);@apply(--center-center)}
+        paper-card:not([vertical]) figure {width:13em;overflow:hidden}
+        paper-card:not([vertical]) figure img {width:initial;height:100%;position:absolute;left:50%;transform:translateX(-50%)}
+        paper-card:not([vertical]) #Info {@apply(--layout-flex)}
+        figure {margin:0;width:100%;position:relative}
+        figure > figcaption {position:absolute;bottom:0;right:0;background:rgba(0,0,0,.69);font-size:.8em;padding:.25em .5em;color:#fff}
+        img {display:block;width:100%}
+        .limit-line {-webkit-box-orient:vertical;text-overflow:ellipsis;overflow:hidden;word-wrap:break-word;white-space:normal;display:-webkit-box}
+        h3 {margin:0;font-size:1em;-webkit-line-clamp:2;max-height:2.6em;line-height:1.3em;position:relative;font-weight: 200;color:white}
+        h4 {color:white;font-weight:200;-webkit-line-clamp:3;max-height:4em;font-size:.7em;margin:0}
+        #Info {padding:.5em;height: 5.5em;height:100%}
+        .channel,.btm {margin:.45em 0 0;color:gray;font-size:.6em}
+        .channel a {color:inherit;text-decoration:inherit}
+        .date,.views {display: inline-block}
+        .views:after {content: " views"}
+        .date:before {content: "-";margin:0 .5em}
+    template
+        paper-card(vertical$="[[!horizontal]]")
+            figure
+                img(src="[[pic]]")
+                figcaption [[duration]]
+            footer#Info.layout.vertical
+                h3.limit-line [[title]]
+                template(is="dom-if",if="[[or(showDescription,horizontal)]]")
+                    h4.limit-line [[description]]
+                h5.channel: a(href="//youtube.com/channel/[[channelId]]",target="_blank") [[channel]]
+                .flex(hidden$="[[!horizontal]]")
+                footer.btm
+                    span.views [[views]]
+                    span.date [[longAgo]]
+    script: :uglify-js:babel
+        Polymer({
+            is: "utube-snippet",
+            properties: {
+                data: {type: Object},
+                id: {type: String, computed: "fetchPath(data,'id')"},
+                showDescription: {type: Boolean, value: false, reflectToAttribute: true},
+                horizontal: {type: Boolean, value: false, reflectToAttribute: true},
+                title: {type: String, computed: "fetchPath(data,'snippet.title')"},
+                description: {type: String, computed: "fetchPath(data,'snippet.description')"},
+                channel: {type: String, computed: "fetchPath(data,'snippet.channelTitle')"},
+                channelId: {type: String, computed: "fetchPath(data,'snippet.channelId')"},
+                longAgo: {type: String, computed: "convertDate(data,'snippet.publishedAt')"},
+                duration: {type: String, computed: "calcDuration(data,'contentDetails.duration')"},
+                views: {type: String, computed: "commaFormat(data,'statistics.viewCount')"},
+                pic: {type: String, computed: "fetchPath(data,'snippet.thumbnails.medium.url')"},
+            },
+            or: (a,b) => a||b,
+            fetchPath: function(d,path) {return this.get("data."+path)},
+            calcDuration: function(d,path) {var dt = this.fetchPath(d,path);dt = dt.slice(2,-1).replace(/\D/g,":");return /\:/g.test(dt)?dt:dt+"s"},
+            commaFormat: function(d,path) {
+                return this.fetchPath(d,path).split('').reverse().map((v,i)=>i%3?v:v+',').reverse().join("").slice(0,-1)
+            },
+            convertDate: function(d,path) {
+                var dt = this.fetchPath(d,path)
+                const dur = new Date(new Date(dt).getTime()-new Date().getTime())
+                const {h,m,s} = {h: dur.getUTCHours(), m: dur.getUTCMinutes(), s: dur.getSeconds()}
+                return (h?h+" hours":m?m+" minutes":s+" seconds")+" ago"
+            },
+        })

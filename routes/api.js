@@ -12,8 +12,12 @@ const API = {
         data.key = API.key
         const q = querystring.stringify(data), URL = API.base+route+"?"+q
         console.log("URL:",URL)
-        request.get(URL, (err,resp,body) => err?rej(err):res(MakeJSON(body)))
-    }).catch(e => console.log(e)),
+        request.get(URL, (err,resp,body) => {
+            if (err) {rej(err)}
+            const d = MakeJSON(body)
+            d.error?rej(d.error):res(d)
+        })
+    }),
 }
 //=======================================================================|
 function APIErr(res, message, code) {
@@ -26,13 +30,29 @@ function APISucc(res, message) {
 }
 router.get("/Get-Trending", function(req, res) {
     API.get("videos", {
-        part:"snippet",
+        part:"snippet,contentDetails,statistics",
         chart: "mostPopular",
         regionCode: "US",
-        maxResults: 25
-    }).then(d => APISucc(res, {data: d.items}),e => APIErr(res, {message: "Could not fetch Popular Videos", error: e}))
+        maxResults: 12
+    }).then(d => APISucc(res, {data: d.items},e => APIErr(res, {message: "Could not fetch Popular Videos", error: e})))
+    .catch(e => APIErr(res, {message: "Could not fetch Popular Videos", error: e}))
 });
-
+router.get("/search/:query", function(req, res) {
+    const data = {}
+    API.get("search", {
+        part:"snippet",
+        q: req.params.query,
+        regionCode: "US",
+        maxResults: 12
+    }).then(d=>{data.ids = d.items.map(i => i.id.videoId).filter(i=>i)})
+    .then(_ => API.get("videos", {
+        part:"snippet,contentDetails,statistics",
+        id: data.ids.join(","),
+        regionCode: "US",
+        maxResults: 12
+    })).then(d => APISucc(res, {data: d.items}),e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
+    .catch(e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
+});
 router.use(function(req, res, next) {
     APIErr(res, "Invalid API call", 403);
 });

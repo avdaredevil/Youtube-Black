@@ -6,28 +6,36 @@ mixin MyComponent(el)
 doctype html
 html
     head
-        title Online Polling App - RU Edition
+        title U-Tube Black
+        meta(name='viewport', content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes')
+        +PolymerImport("iron-ajax")
+        +PolymerImport("iron-icon")
         +PolymerImport("iron-icons")
         +PolymerImport("iron-icons","av-icons")
         +PolymerImport("iron-icons","social-icons")
-        +PolymerImport("iron-icon")
         +PolymerImport("iron-flex-layout","iron-flex-layout-classes")
         +PolymerImport("paper-item","paper-icon-item")
         +PolymerImport("paper-card")
         +PolymerImport("paper-toast")
         +PolymerImport("paper-button")
+        +PolymerImport("paper-dialog")
         +PolymerImport("paper-toolbar")
+        +PolymerImport("paper-progress")
         +PolymerImport("paper-icon-button")
         +PolymerImport("paper-header-panel")
         +PolymerImport("paper-drawer-panel")
+        +PolymerImport("google-youtube")
         //- Custom Fetches
-        +PolymerImport("highcharts-chart")
         +PolymerImport("paper-search")
+        +PolymerImport("highcharts-chart")
+        +MyComponent("utube-snippet")
         +MyComponent("sidebar-content")
         link(rel="stylesheet",href='/assets/gmail-scrollbar.css')
+        link(rel="stylesheet",href='https://fonts.googleapis.com/css?family=Raleway')
         script(src='/socket.io/socket.io.js')
         style: :clean-css
             html,body,head {margin:0;border:0;padding:0;font-family: Roboto}
+            * {box-sizing: border-box}
     body.fullbleed
         style(is="custom-style",include="iron-flex iron-flex-factors iron-flex-alignment iron-positioning")
         style: :clean-css
@@ -44,6 +52,7 @@ html
             #logo[thin] {width: 2.75em;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
             #Search {min-width:17em;width:90%;max-width: 29em;margin:auto;background-color: rgba(255,255,255,.14);color:white}
             #Search {--background-color: transparent}
+            #main {overflow: auto}
             sidebar-content {overflow: auto}
         template#app(is="dom-bind")
             paper-header-panel(type="waterfall")
@@ -52,7 +61,7 @@ html
                         paper-icon-button(hidden$="[[!thin]]",icon="[[ternary(openMenu,'arrow-back','menu')]]",on-tap="toggleSidebar")
                         img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo')]]_white.png")
                     .flex-6(hidden$="[[thin]]")
-                        paper-search-bar#Search
+                        paper-search-bar#Search(query="{{searchQuery}}")
                     .flex.justify-end.layout.horizontal
                         .flex
                         span [[users]]
@@ -61,10 +70,10 @@ html
                     nav(drawer)
                         sidebar-content.fit
                         #navShadow
-                    main.fit.layout-vertical.around-justified(main)
+                    main#main.fit.layout-vertical.around-justified(main)
                         block content
             dummy-listener(prop="[[setPanelState(thin,panel)]]")
-            iron-ajax(auto,url="/api/Get-Trending",last-response="{{trending}}")
+            iron-ajax(auto,url="/api/search/[[searchQuery]]",last-response="{{searchResults}}")
             paper-toast#status
             paper-toast#error
         script: :uglify-js:babel
@@ -76,4 +85,163 @@ html
             t.sendChoice = e => {t.io.emit("poll_choice",e.model.item)}
             t.setPanelState = (n,p) => {t.openMenu = n&&p=="drawer"}
             t.toggleSidebar = _ => t.$.drawer.togglePanel()
+            t.searchQuery = ""
+            t.searchResults = {data: []}    
+        block style
         block script
+        script: :uglify-js:babel
+            (function() {
+                  if (document.domain != "www.youtube.com")
+                    return;
+
+                  var usingContentBlockerAPI = true;
+                  try
+                  {
+                    if (ext.backgroundPage.sendMessageSync({type: "prefs.get",
+                                                            key: "safariContentBlocker"}) != true)
+                      usingContentBlockerAPI = false;
+                  }
+                  catch (e)
+                  {
+                  }
+
+                  if (usingContentBlockerAPI)
+                    return;
+
+                  if (ext.backgroundPage.sendMessageSync({type: "filters.isPageWhitelisted"}))
+                    return;
+
+                  var badArgumentsRegex = /^((.*_)?(ad|ads|afv|adsense)(_.*)?|(ad3|st)_module|prerolls|interstitial|infringe|iv_cta_url)$/;
+
+                  function rewriteFlashvars(flashvars)
+                  {
+                    var pairs = flashvars.split("&");
+                    for (var i = 0; i < pairs.length; i++)
+                      if (badArgumentsRegex.test(pairs[i].split("=")[0]))
+                        pairs.splice(i--, 1);
+                    return pairs.join("&");
+                  }
+
+                  function patchPlayer(player)
+                  {
+                    var newPlayer = player.cloneNode(true);
+                    var flashvarsChanged = false;
+
+                    var flashvars = newPlayer.getAttribute("flashvars");
+                    if (flashvars)
+                    {
+                      var newFlashvars = rewriteFlashvars(flashvars);
+                      if (flashvars != newFlashvars)
+                      {
+                        newPlayer.setAttribute("flashvars", newFlashvars);
+                        flashvarsChanged = true;
+                      }
+                    }
+
+                    var param = newPlayer.querySelector("param[name=flashvars]");
+                    if (param)
+                    {
+                      var value = param.getAttribute("value");
+                      if (value)
+                      {
+                        var newValue = rewriteFlashvars(value);
+                        if (value != newValue)
+                        {
+                          param.setAttribute("value", newValue);
+                          flashvarsChanged = true;
+                        }
+                      }
+                    }
+
+                    if (flashvarsChanged)
+                      player.parentNode.replaceChild(newPlayer, player);
+                  }
+
+                  document.addEventListener("beforeload", function(event)
+                  {
+                    if ((event.target.localName == "object" || event.target.localName == "embed") && /:\/\/[^\/]*\.ytimg\.com\//.test(event.url))
+                      patchPlayer(event.target);
+                  }, true);
+
+                  runInPageContext(function(badArgumentsRegexSource)
+                  {
+                    var badArgumentsRegex = new RegExp(badArgumentsRegexSource);
+
+                    // If history.pushState is available, YouTube uses the history API
+                    // when navigation from one video to another, and tells the flash
+                    // player with JavaScript which video and which ads to show next,
+                    // bypassing our flashvars rewrite code. So we disable
+                    // history.pushState before YouTube's JavaScript runs.
+                    if (typeof History != "undefined")
+                      History.prototype.pushState = undefined;
+
+                    // The HTML5 player is configured via ytplayer.config.args. We have
+                    // to make sure that ad-related arguments are ignored as they are set.
+                    var ytplayer = undefined;
+                    Object.defineProperty(window, "ytplayer",
+                    {
+                      configurable: true,
+                      get: function()
+                      {
+                        return ytplayer;
+                      },
+                      set: function(rawYtplayer)
+                      {
+                        if (!rawYtplayer || typeof rawYtplayer != "object")
+                        {
+                          ytplayer = rawYtplayer;
+                          return;
+                        }
+
+                        var config = undefined;
+                        ytplayer = Object.create(rawYtplayer, {
+                          config: {
+                            enumerable: true,
+                            get: function()
+                            {
+                              return config;
+                            },
+                            set: function(rawConfig)
+                            {
+                              if (!rawConfig || typeof rawConfig != "object")
+                              {
+                                config = rawConfig;
+                                return;
+                              }
+
+                              var args = undefined;
+                              config = Object.create(rawConfig, {
+                                args: {
+                                  enumerable: true,
+                                  get: function()
+                                  {
+                                    return args;
+                                  },
+                                  set: function(rawArgs)
+                                  {
+                                    if (!rawArgs || typeof rawArgs != "object")
+                                    {
+                                      args = rawArgs;
+                                      return;
+                                    }
+
+                                    args = {};
+                                    for (var arg in rawArgs)
+                                    {
+                                      if (!badArgumentsRegex.test(arg))
+                                        args[arg] = rawArgs[arg];
+                                    }
+                                  }
+                                }
+                              });
+
+                              config.args = rawConfig.args;
+                            }
+                          }
+                        });
+
+                        ytplayer.config = rawYtplayer.config;
+                      }
+                    });
+                  }, badArgumentsRegex.source);
+                })();
