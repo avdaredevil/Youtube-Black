@@ -33,6 +33,13 @@ function APIErr(res, message, code) {
 function APISucc(res, message) {
     return res.status(200).json(message);
 }
+const fetchProjectCount = cb => {
+    Video.count({}, (err,c) => {
+        if (err) {console.error(err);return cb(err)}
+        cb(null,c)
+    })
+}
+
 router.get("/Get-Trending", function(req, res) {
     API.get("videos", {
         part:"snippet,contentDetails,statistics",
@@ -59,6 +66,12 @@ router.get("/search/:query", function(req, res) {
     .catch(e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
 });
 
+router.post("/Get-Video/:id", function(req, res) {
+    Video.findById(req.params.id, (err,v) => {
+        //TODO: Check if this Route Works
+        res.sendFile(path.resolve(v.file))
+    })
+})
 router.post("/Download-Dis/:vid", function(req, res) {
     const vid = dl_y("http://www.youtube.com/watch?v="+req.params.vid)
     vid.on('info', function(info) {
@@ -66,11 +79,13 @@ router.post("/Download-Dis/:vid", function(req, res) {
         console.log('filename: ' + info.filename);
         console.log('size: '+info.size);
     });
-    const location = path.resolve('./downloads/'+req.params.vid+'.mp4')
+    const loc = './downloads/'+req.params.vid+'.mp4', location = path.resolve(loc)
     vid.pipe(fs.createWriteStream(location))
-    Video.newVideo(req.params.vid, './downloads/'+req.params.vid+'.mp4', req.body, (err,v) => {
+    Video.newVideo(req.params.vid, loc, req.body, (err,v) => {
         if (err) {return APIErr(res,{error: err})}
-        return APISucc(res,{message: "I Gotcha -AP", video: v})
+        fetchProjectCount((err,c) => {
+            return APISucc(res,{message: "I Gotcha -AP", video: v, count: c})
+        })
     })
 })
 

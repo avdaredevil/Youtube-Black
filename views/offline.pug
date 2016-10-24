@@ -1,0 +1,59 @@
+extends layout
+
+block style
+    style: :clean-css
+        #trending {padding: 1em .5em;box-shadow: inset 0 0 12px 0}
+        #modal {width:80%;height:30em;background: transparent}
+        #modal paper-icon-button {opacity: 1;position:absolute;bottom:0;margin:0;right:0;z-index:999999999;background:black;color:white;transition: opacity .25s}
+        #modal:not(:hover) paper-icon-button {opacity: 0}
+        .scroll {overflow: auto}
+        #tube {margin:0;padding:0;height:100%}
+        h2 {font-family:"Raleway";color: white;margin: .5em 0;font-weight: 200}
+        img {display:block;width:100%}
+        #Preview {cursor:pointer;width:9em;position:fixed;bottom:2em;right:2em}
+        #progress {width:100%}
+block content
+    h2 Offline Vids
+    section#trending.layout.horizontal.scroll
+        template(is="dom-repeat",items="[[offlineVids]]")
+            utube-snippet(data="[[item.data]]",on-tap="openOffVideo",on-download="downloadVideo",no-download)
+    h2(hidden$="[[!countOf(searchResults.data)]]") Search Results
+    section#results(hidden$="[[!countOf(searchResults.data)]]")
+        template(is="dom-repeat",items="[[searchResults.data]]")
+            utube-snippet(data="[[item]]",on-tap="openVideo",on-download="downloadVideo",horizontal)
+    footer#Preview(hidden$="[[showPreview(modalMinimized,currVideo)]]",on-tap="openVideo")
+        template(is="dom-if",if="[[currVideo.snippet]]")
+            img(src="[[currVideo.snippet.thumbnails.medium.url]]")
+            paper-progress#progress(value="[[mult(progress,100)]]")
+    paper-dialog#modal(with-backdrop,on-iron-overlay-closed="onModalClose",on-iron-overlay-opened="onModalOpen")
+        google-youtube#tube(autoplay=1,state="{{playState}}",video-id="[[currVideo.id]]",fluid,currenttime="{{playback.done}}",duration="{{playback.total}}")
+    paper-dialog#modal2(with-backdrop,on-iron-overlay-closed="onModalClose",on-iron-overlay-opened="onModalOpen")
+        video(src="/api/Get-Video/[[currVideo.id]]")
+    iron-ajax#downloadAPI(method="POST",handle-as="json",content-type="application/json",last-response="respData",on-response="updateCount")
+    dummy-listener(prop="[[calcProgress(playback.done,playback.total)]]")
+    dummy-listener(prop="[[stateCalc(playState)]]")
+block script
+    script.
+        var data = !{JSON.stringify(projDetails)}
+    script: :uglify-js:babel
+        t.mult = (a,b) => a*b
+        t.offlineVids = data.slice(0)
+        t.countOf = d => (d||[]).length
+        t.playback = {}
+        t.currVideo = {}
+        t.openOffVideo = e => {const p = (e.model||[]).item;p && (t.currVideo = p);t.$.modal2.open()}
+        t.openVideo = e => {const p = (e.model||[]).item;p && (t.currVideo = p);t.$.modal.open()}
+        t.updateCount = (a) => {
+            t.pc = a.detail.response.count
+        }
+        t.downloadVideo = e => {
+            const p = e.model.item, el = t.$.downloadAPI
+            el.url = "/api/Download-Dis/"+p.id
+            el.body = p
+            el.generateRequest()
+        }
+        t.onModalClose = _ => {t.modalMinimized = true}
+        t.onModalOpen = _ => {t.modalMinimized = false}
+        t.calcProgress = (d,tr) => {t.progress = d/tr}
+        t.showPreview = (min,c) => !(c.id&&min)
+        t.stateCalc = p => {if (p<3 || !t.$.tube.playbackstarted) {return};console.log("Forzing",p);t.$.tube.play()}

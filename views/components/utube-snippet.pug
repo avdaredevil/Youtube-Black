@@ -24,7 +24,7 @@ dom-module#utube-snippet
         paper-card(vertical$="[[!horizontal]]")
             figure
                 img(src="[[pic]]")
-                paper-icon-button#download(icon="file-download",on-tap="download")
+                paper-icon-button#download(icon="file-download",on-tap="download",hidden$="[[noDownload]]")
                 figcaption [[duration]]
             footer#Info.layout.vertical
                 h3.limit-line [[title]]
@@ -43,6 +43,7 @@ dom-module#utube-snippet
                 id: {type: String, computed: "fetchPath(data,'id')"},
                 showDescription: {type: Boolean, value: false, reflectToAttribute: true},
                 horizontal: {type: Boolean, value: false, reflectToAttribute: true},
+                noDownload: {type: Boolean, value: false, reflectToAttribute: true},
                 title: {type: String, computed: "fetchPath(data,'snippet.title')"},
                 description: {type: String, computed: "fetchPath(data,'snippet.description')"},
                 channel: {type: String, computed: "fetchPath(data,'snippet.channelTitle')"},

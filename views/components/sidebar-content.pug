@@ -9,10 +9,11 @@ dom-module#sidebar-content
                 iron-icon(icon="[[item.icon]]",item-icon)
                 a(href="[[item.link]]") [[item.text]]
         paper-icon-item
-            iron-icon(icon="av:video-library",item-icon)
+            .layout.horizontal.center-center(item-icon)
+                iron-icon(icon="av:video-library")
+                paper-badge(label="[[pc]]")
             a(href="/offline")
                 span Downloaded Videos
-                paper-badge [[pc]]
         .div Library
         template(is="dom-repeat", items="[[playlists]]")
             paper-icon-item
@@ -29,21 +30,21 @@ dom-module#sidebar-content
             properties: {
                 pc: {type: Number, value: 0},
                 menuItems: {type: Array, value: [
-                    {icon: "home", text: "Home", link: "/home"},
-                    {icon: "social:person", text: "My Channel", link: "/my-channel"},
-                    {icon: "social:whatshot", text: "Trending", link: "/trending"},
-                    {icon: "av:subscriptions", text: "Subscriptions", link: "/subscriptions"},
-                    {icon: "hourglass-empty", text: "History", link: "/history"}
+                    {icon: "home", text: "Home", link: "/"},
+                    {icon: "social:person", text: "My Channel", link: "#my-channel"},
+                    {icon: "social:whatshot", text: "Trending", link: "#trending"},
+                    {icon: "av:subscriptions", text: "Subscriptions", link: "#subscriptions"},
+                    {icon: "hourglass-empty", text: "History", link: "#history"}
                 ]},
                 playlists: {type: Array, value: [
-                    {icon: "av:playlist-play", text: "Random1", link:"/random1"},
-                    {icon: "av:playlist-play", text: "Random2", link:"/random2"},
-                    {icon: "thumb-up", text: "Liked Videos", link:"/like-videos"},
+                    {icon: "av:playlist-play", text: "Random1", link:"#random1"},
+                    {icon: "av:playlist-play", text: "Random2", link:"#random2"},
+                    {icon: "thumb-up", text: "Liked Videos", link:"#like-videos"},
                 ]},
                 subscriptions: {type: Array, value: [
-                    {img: "/assets/logo.png", text: "PhillyD", link:"/PhillyD", number: 4},
-                    {img: "/assets/logo.png", text: "DankMemes", link:"/DankMemes", number: 12},
-                    {img: "/assets/logo.png", text: "Blackness", link:"/Blackness", number: 74},
+                    {img: "/assets/logo.png", text: "PhillyD", link:"#PhillyD", number: 4},
+                    {img: "/assets/logo.png", text: "DankMemes", link:"#DankMemes", number: 12},
+                    {img: "/assets/logo.png", text: "Blackness", link:"#Blackness", number: 74},
                 ]},
             },
         })

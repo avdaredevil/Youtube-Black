@@ -60,7 +60,7 @@ html
                 paper-toolbar#toolbar
                     .flex.layout.horizontal.center
                         paper-icon-button(hidden$="[[!thin]]",icon="[[ternary(openMenu,'arrow-back','menu')]]",on-tap="toggleSidebar")
-                        img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus','logo')]]_white.png")
+                        img#logo(thin$="[[thin]]",src="/assets/[[ternary(thin,'octopus_white','logo_midde_finger')]].png",on-tap="openEaster")
                     .flex-6(hidden$="[[thin]]")
                         paper-search-bar#Search(query="{{searchQuery}}")
                     .flex.justify-end.layout.horizontal(hidden$="[[thin]]")
@@ -69,7 +69,7 @@ html
                         iron-icon(icon="social:person")
                 paper-drawer-panel#drawer(narrow="{{thin}}",selected="{{panel}}")
                     nav(drawer)
-                        sidebar-content.fit(watch="[[pc]]")
+                        sidebar-content.fit(pc="[[pc]]")
                         #navShadow
                     main#main.fit.layout-vertical.around-justified(main)
                         block content
@@ -77,13 +77,14 @@ html
             iron-ajax(auto,url="/api/search/[[searchQuery]]",last-response="{{searchResults}}")
             paper-toast#status
             paper-toast#error
-        script
+        script.
             var pc = #{projects}
         script: :uglify-js:babel
             var t = document.querySelector("#app")
             t.io = io()
             t.pc = pc
             t.openMenu = false
+            t.openEaster = _ => alert("Once you go black, you never go back!")
             t.ternary = (a,b,c) => a?b:c
             t.users = 0
             t.sendChoice = e => {t.io.emit("poll_choice",e.model.item)}
