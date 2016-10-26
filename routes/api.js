@@ -66,11 +66,15 @@ router.get("/search/:query", function(req, res) {
     .catch(e => APIErr(res, {message: "Could not fetch Search Results for ["+req.params.query+"]", error: e}))
 });
 
-router.post("/Get-Video/:id", function(req, res) {
+router.get("/Get-Video/:id", function(req, res) {
     Video.findById(req.params.id, (err,v) => {
-        //TODO: Check if this Route Works
+        if (err) {return APIError(res,"Could not find video",404)}
         res.sendFile(path.resolve(v.file))
     })
+})
+router.get("/Remove-Video/:vid", function(req, res) {
+    //TODO: Implement this route
+    res.json({na:"na","naa":"naa",bat:"man"})
 })
 router.post("/Download-Dis/:vid", function(req, res) {
     const vid = dl_y("http://www.youtube.com/watch?v="+req.params.vid)

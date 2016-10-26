@@ -12,6 +12,7 @@ block style
         img {display:block;width:100%}
         #Preview {cursor:pointer;width:9em;position:fixed;bottom:2em;right:2em}
         #progress {width:100%}
+        #Vid {width:80vw;margin:0;padding:0;display:block}
 block content
     h2 Offline Vids
     section#trending.layout.horizontal.scroll
@@ -28,7 +29,7 @@ block content
     paper-dialog#modal(with-backdrop,on-iron-overlay-closed="onModalClose",on-iron-overlay-opened="onModalOpen")
         google-youtube#tube(autoplay=1,state="{{playState}}",video-id="[[currVideo.id]]",fluid,currenttime="{{playback.done}}",duration="{{playback.total}}")
     paper-dialog#modal2(with-backdrop,on-iron-overlay-closed="onModalClose",on-iron-overlay-opened="onModalOpen")
-        video(src="/api/Get-Video/[[currVideo.id]]")
+        video#Vid(is="iron-video",controls,src="/api/Get-Video/[[currVideo.id]]")
     iron-ajax#downloadAPI(method="POST",handle-as="json",content-type="application/json",last-response="respData",on-response="updateCount")
     dummy-listener(prop="[[calcProgress(playback.done,playback.total)]]")
     dummy-listener(prop="[[stateCalc(playState)]]")

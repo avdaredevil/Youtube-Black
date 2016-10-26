@@ -1,0 +1,34 @@
+script: :uglify-js:babel
+    Polymer({
+        is: "iron-video",
+        extends: "video",
+        properties: {
+            src: {type: String},
+            srcObject: {type: Object},
+            poster: {type: String},
+            seeking: {type: Boolean, value: false, reflectToAttribute: true, notifies: true},
+            ended: {type: Boolean, value: false, readOnly: true, reflectToAttribute: true, notifies: true},
+            autoplay: {type: Boolean, value: false, reflectToAttribute: true},
+            loop: {type: Boolean, value: false, reflectToAttribute: true},
+            preload: {type: Boolean, value: false, reflectToAttribute: true},
+            controls: {type: Boolean, value: false, reflectToAttribute: true},
+            muted: {type: Boolean, value: false, reflectToAttribute: true, notifies: true},
+            crossOrigin: {type: Boolean, value: false, reflectToAttribute: true},
+            played: {type: Object, notifies: true},
+            buffered: {type: Object, notifies: true},
+            seekable: {type: Object, notifies: true},
+            currentTime: {type: Number, notifies: true},
+            networkState: {type: Number, readOnly: true, notifies: true},
+            readyState: {type: Number, readOnly: true, notifies: true},
+            duration: {type: Number, readOnly: true, notifies: true},
+            playbackRate: {type: Number, value: 1},
+            // RANGES
+            range_played: {type: Object, computed: "ranges(played.*,readyState)"},
+            range_buffered: {type: Object, computed: "ranges(buffered.*,readyState)"},
+        },
+        ranges: function(a){
+            a = typeof a=="string"?this[a]:(a.base || a)
+            if (!(a instanceof TimeRanges)) {console.error("[iron-video]","Range [",a,"] is not a timerange")}
+            return Array.apply(0,Array(a.length)).map((_,i) => ({start: a.start(i), stop: a.end(i)}))
+        },
+    })
