@@ -1,7 +1,3 @@
-_[**Click Here**](../README.md) to go back_
-
----
-
 ## Advanced Web Development - Web Code
 > Server code featuring [_MEAN stack_](https://www.sitepoint.com/introduction-mean-stack/), [_Google Polymer_](https://www.polymer-project.org/1.0/), [_Socket.io_](http://socket.io/), and Material Design.
 
@@ -28,6 +24,7 @@ _[**Click Here**](../README.md) to go back_
     - _paper-toolbar_
     - _paper-header-panel_
     - _[highcharts-chart](https://avdaredevil.github.io/highcharts-chart/)_
+    - _**AND a ton of other components from [here](https://elements.polymer-project.org/browse) and [here](https://customelements.io)**_
 
 
 ---
