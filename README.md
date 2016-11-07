@@ -1,6 +1,13 @@
 ## Advanced Web Development - Web Code
 > Server code featuring [_MEAN stack_](https://www.sitepoint.com/introduction-mean-stack/), [_Google Polymer_](https://www.polymer-project.org/1.0/), [_Socket.io_](http://socket.io/), and Material Design.
 
+### Screenshots
+> 
+Main Screen | Mobile View
+---- | ----
+![image](https://cloud.githubusercontent.com/assets/5303018/20080504/1545e614-a518-11e6-8c10-82c9bbd794cb.png) | ![image](https://cloud.githubusercontent.com/assets/5303018/20080581/8434a3b2-a518-11e6-840d-8fa230197326.png)
+
+
 ### To Deploy:
 > - Clone this repo!
 - CD to this directory
