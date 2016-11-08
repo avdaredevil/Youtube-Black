@@ -32,6 +32,7 @@ Main Screen | Mobile View
     - _paper-toolbar_
     - _paper-header-panel_
     - _[highcharts-chart](https://avdaredevil.github.io/highcharts-chart/)_
+    - _[All Components in /views/components](/views/components)_
     - _**AND a ton of other components from [here](https://elements.polymer-project.org/browse) and [here](https://customelements.io)**_
 
 
