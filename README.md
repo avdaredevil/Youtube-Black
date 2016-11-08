@@ -37,4 +37,4 @@ Main Screen | Mobile View
 
 
 ---
-_By: [Apoorv Verma [AP]](https://www.linkedin.com/in/apoorvverma), [Andrew Khaz](/01), [Arpit Shah](/arpitshah101), [Hiren Patel](/KingHunnit)_
+_By: [Apoorv Verma [AP]](https://www.linkedin.com/in/apoorvverma), [Andrew Khaz](/01), [Arpit Shah](/arpitshah101), [Hiren Patel](/KingHunnet)_
