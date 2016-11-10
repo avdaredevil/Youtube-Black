@@ -1,6 +1,6 @@
 ## U-Tube Black
 > Imagine a YouTube where all the things we ever wanted, were given to us for free! Things like:
-- _No Ads_
+- _No Ads on any platform_
 - _Offline Videos_
 - _Background Playback_
 
