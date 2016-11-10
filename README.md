@@ -1,6 +1,12 @@
 ## U-Tube Black
-> Things we'd like our favorite video streaming service to offer for free all in one inclusive package!
-Server code featuring [_MEAN stack_](https://www.sitepoint.com/introduction-mean-stack/), [_Google Polymer_](https://www.polymer-project.org/1.0/), [_Socket.io_](http://socket.io/), and Material Design.
+> Imagine a YouTube where all the things we ever wanted, were given to us for free! Things like:
+- _No Ads_
+- _Offline Videos_
+- _Background Playback_
+
+Wouldn't that be great!? Now stop imagining, because you're looking right at it!
+
+PS. Server code featuring [_MEAN stack_](https://www.sitepoint.com/introduction-mean-stack/), [_Google Polymer_](https://www.polymer-project.org/1.0/), [_Socket.io_](http://socket.io/), and Material Design.
 
 ### Screenshots
 > 
